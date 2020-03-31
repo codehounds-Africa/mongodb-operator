@@ -1,0 +1,7 @@
+apiVersion: app.codehounds.africa/v1alpha1
+kind: MongoDB
+metadata:
+  name: example-mongodb
+spec:
+  # Add fields here
+  size: 3
