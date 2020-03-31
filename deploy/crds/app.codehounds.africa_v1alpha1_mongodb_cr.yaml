@@ -1,4 +1,4 @@
-apiVersion: app.codehounds.africa/v1alpha1
+apiVersion: mongodb.codehounds.africa/v1alpha1
 kind: MongoDB
 metadata:
   name: example-mongodb
