@@ -16,7 +16,7 @@ spec:
       containers:
         - name: mongodb-operator
           # Replace this with the built image name
-          image: REPLACE_IMAGE
+          image: quay.io/barnie/mongodbcluter-operator:0.0.1
           command:
           - mongodb-operator
           imagePullPolicy: Always
