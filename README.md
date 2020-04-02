@@ -1,2 +1,2 @@
-# mongodb-operator
-Kubernetes mongodb-operator.
+# mongodbcluster-operator
+Kubernetes mongodbcluster-operator.
