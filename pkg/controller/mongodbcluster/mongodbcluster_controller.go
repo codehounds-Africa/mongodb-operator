@@ -1,9 +1,9 @@
-package mongodb
+package mongodbcluster
 
 import (
 	"context"
 
-	appv1alpha1 "github.com/codehounds/mongodb-operator/pkg/apis/app/v1alpha1"
+	mongodboperatorv1alpha1 "github.com/codehounds/mongodb-operator/pkg/apis/mongodboperator/v1alpha1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -19,14 +19,14 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/source"
 )
 
-var log = logf.Log.WithName("controller_mongodb")
+var log = logf.Log.WithName("controller_mongodbcluster")
 
 /**
 * USER ACTION REQUIRED: This is a scaffold file intended for the user to modify with their own Controller
 * business logic.  Delete these comments after modifying this file.*
  */
 
-// Add creates a new MongoDB Controller and adds it to the Manager. The Manager will set fields on the Controller
+// Add creates a new MongodbCluster Controller and adds it to the Manager. The Manager will set fields on the Controller
 // and Start it when the Manager is Started.
 func Add(mgr manager.Manager) error {
 	return add(mgr, newReconciler(mgr))
@@ -34,28 +34,28 @@ func Add(mgr manager.Manager) error {
 
 // newReconciler returns a new reconcile.Reconciler
 func newReconciler(mgr manager.Manager) reconcile.Reconciler {
-	return &ReconcileMongoDB{client: mgr.GetClient(), scheme: mgr.GetScheme()}
+	return &ReconcileMongodbCluster{client: mgr.GetClient(), scheme: mgr.GetScheme()}
 }
 
 // add adds a new Controller to mgr with r as the reconcile.Reconciler
 func add(mgr manager.Manager, r reconcile.Reconciler) error {
 	// Create a new controller
-	c, err := controller.New("mongodb-controller", mgr, controller.Options{Reconciler: r})
+	c, err := controller.New("mongodbcluster-controller", mgr, controller.Options{Reconciler: r})
 	if err != nil {
 		return err
 	}
 
-	// Watch for changes to primary resource MongoDB
-	err = c.Watch(&source.Kind{Type: &appv1alpha1.MongoDB{}}, &handler.EnqueueRequestForObject{})
+	// Watch for changes to primary resource MongodbCluster
+	err = c.Watch(&source.Kind{Type: &mongodboperatorv1alpha1.MongodbCluster{}}, &handler.EnqueueRequestForObject{})
 	if err != nil {
 		return err
 	}
 
 	// TODO(user): Modify this to be the types you create that are owned by the primary resource
-	// Watch for changes to secondary resource Pods and requeue the owner MongoDB
+	// Watch for changes to secondary resource Pods and requeue the owner MongodbCluster
 	err = c.Watch(&source.Kind{Type: &corev1.Pod{}}, &handler.EnqueueRequestForOwner{
 		IsController: true,
-		OwnerType:    &appv1alpha1.MongoDB{},
+		OwnerType:    &mongodboperatorv1alpha1.MongodbCluster{},
 	})
 	if err != nil {
 		return err
@@ -64,30 +64,30 @@ func add(mgr manager.Manager, r reconcile.Reconciler) error {
 	return nil
 }
 
-// blank assignment to verify that ReconcileMongoDB implements reconcile.Reconciler
-var _ reconcile.Reconciler = &ReconcileMongoDB{}
+// blank assignment to verify that ReconcileMongodbCluster implements reconcile.Reconciler
+var _ reconcile.Reconciler = &ReconcileMongodbCluster{}
 
-// ReconcileMongoDB reconciles a MongoDB object
-type ReconcileMongoDB struct {
+// ReconcileMongodbCluster reconciles a MongodbCluster object
+type ReconcileMongodbCluster struct {
 	// This client, initialized using mgr.Client() above, is a split client
 	// that reads objects from the cache and writes to the apiserver
 	client client.Client
 	scheme *runtime.Scheme
 }
 
-// Reconcile reads that state of the cluster for a MongoDB object and makes changes based on the state read
-// and what is in the MongoDB.Spec
+// Reconcile reads that state of the cluster for a MongodbCluster object and makes changes based on the state read
+// and what is in the MongodbCluster.Spec
 // TODO(user): Modify this Reconcile function to implement your Controller logic.  This example creates
 // a Pod as an example
 // Note:
 // The Controller will requeue the Request to be processed again if the returned error is non-nil or
 // Result.Requeue is true, otherwise upon completion it will remove the work from the queue.
-func (r *ReconcileMongoDB) Reconcile(request reconcile.Request) (reconcile.Result, error) {
+func (r *ReconcileMongodbCluster) Reconcile(request reconcile.Request) (reconcile.Result, error) {
 	reqLogger := log.WithValues("Request.Namespace", request.Namespace, "Request.Name", request.Name)
-	reqLogger.Info("Reconciling MongoDB")
+	reqLogger.Info("Reconciling MongodbCluster")
 
-	// Fetch the MongoDB instance
-	instance := &appv1alpha1.MongoDB{}
+	// Fetch the MongodbCluster instance
+	instance := &mongodboperatorv1alpha1.MongodbCluster{}
 	err := r.client.Get(context.TODO(), request.NamespacedName, instance)
 	if err != nil {
 		if errors.IsNotFound(err) {
@@ -103,7 +103,7 @@ func (r *ReconcileMongoDB) Reconcile(request reconcile.Request) (reconcile.Resul
 	// Define a new Pod object
 	pod := newPodForCR(instance)
 
-	// Set MongoDB instance as the owner and controller
+	// Set MongodbCluster instance as the owner and controller
 	if err := controllerutil.SetControllerReference(instance, pod, r.scheme); err != nil {
 		return reconcile.Result{}, err
 	}
@@ -130,7 +130,7 @@ func (r *ReconcileMongoDB) Reconcile(request reconcile.Request) (reconcile.Resul
 }
 
 // newPodForCR returns a busybox pod with the same name/namespace as the cr
-func newPodForCR(cr *appv1alpha1.MongoDB) *corev1.Pod {
+func newPodForCR(cr *mongodboperatorv1alpha1.MongodbCluster) *corev1.Pod {
 	labels := map[string]string{
 		"app": cr.Name,
 	}

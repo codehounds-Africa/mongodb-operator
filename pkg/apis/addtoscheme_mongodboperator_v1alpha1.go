@@ -1,7 +1,7 @@
 package apis
 
 import (
-	"github.com/codehounds/mongodb-operator/pkg/apis/app/v1alpha1"
+	"github.com/codehounds/mongodb-operator/pkg/apis/mongodboperator/v1alpha1"
 )
 
 func init() {

@@ -1,0 +1,7 @@
+apiVersion: mongodboperator.codehounds.africa/v1alpha1
+kind: MongodbCluster
+metadata:
+  name: example-mongodbcluster
+spec:
+  # Add fields here
+  size: 3

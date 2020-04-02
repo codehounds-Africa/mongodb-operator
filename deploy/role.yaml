@@ -67,7 +67,7 @@ rules:
   verbs:
   - get
 - apiGroups:
-  - mongodb.codehounds.africa
+  - mongodboperator.codehounds.africa
   resources:
   - '*'
   verbs:
