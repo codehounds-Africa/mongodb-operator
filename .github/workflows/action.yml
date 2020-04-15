@@ -1,4 +1,4 @@
-name: mongodb-operator
+name: build-test
 
 on:
   push:
